@@ -1,13 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), { prefix: '/uploads' });
+  const server = app.getHttpServer();
+  const router = server._events.request._router;
+  console.log(router.stack.map((r: any) => r.route?.path));
 
-  await app.listen(process.env.PORT ?? 3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
 }
 bootstrap();
