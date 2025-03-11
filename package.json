@@ -30,6 +30,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.11",
     "@prisma/client": "^6.4.1",
+    "@vercel/node": "^5.1.12",
     "bcrypt": "^5.1.1",
     "class-validator": "^0.14.1",
     "multer": "^1.4.5-lts.1",
@@ -69,8 +70,8 @@
     "typescript-eslint": "^8.20.0"
   },
   "engines": {
-  "node": "20.x"
-},
+    "node": "20.x"
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",
