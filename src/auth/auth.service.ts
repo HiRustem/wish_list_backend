@@ -1,7 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Get,
+  Injectable,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AuthService {
@@ -9,6 +16,12 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('validate-token')
+  async validateToken(@Req() req) {
+    return { userId: req.user.id, email: req.user.email };
+  }
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findUserByEmail(email);
