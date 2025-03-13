@@ -44,4 +44,26 @@ export class AuthService {
     const payload = { id: user.id, email: user.email };
     return { access_token: this.jwtService.sign(payload) };
   }
+
+  async register(email: string, password: string, nickname: string) {
+    // Хешируем пароль
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Создаем пользователя
+    const user = await this.usersService.createUser({
+      email,
+      password: hashedPassword,
+      nickname,
+    });
+
+    // Генерируем токен
+    const payload = { id: user.id, email: user.email };
+    const token = this.jwtService.sign(payload);
+
+    // Возвращаем пользователя и токен
+    return {
+      user,
+      token,
+    };
+  }
 }
