@@ -18,6 +18,14 @@ export class AuthService {
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  async getCurrentUser(@Req() req) {
+    const userId = req.user.id;
+    const user = await this.usersService.findById(userId);
+    return user;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get('validate-token')
   async validateToken(@Req() req) {
     return { userId: req.user.id, email: req.user.email };
