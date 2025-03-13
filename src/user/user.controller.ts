@@ -11,14 +11,6 @@ import {
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @Post('register')
-  async register(
-    @Body()
-    userRegisterDto: UserRegisterDto,
-  ) {
-    return this.userService.createUser(userRegisterDto);
-  }
-
   @Get()
   async findAll() {
     return this.userService.findAll();

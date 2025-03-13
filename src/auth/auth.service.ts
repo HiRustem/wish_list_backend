@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Get,
   Injectable,
   Req,
@@ -46,6 +47,12 @@ export class AuthService {
   }
 
   async register(email: string, password: string, nickname: string) {
+    const existingUser = await this.usersService.findByEmail(email);
+
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+
     // Хешируем пароль
     const hashedPassword = await bcrypt.hash(password, 10);
 
