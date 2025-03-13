@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
