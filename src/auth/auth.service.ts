@@ -18,18 +18,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('me')
-  async getCurrentUser(@Req() req) {
-    const userId = req.user.id;
+  async getCurrentUser(userId: string) {
     const user = await this.usersService.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
     return user;
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('validate-token')
-  async validateToken(@Req() req) {
-    return { userId: req.user.id, email: req.user.email };
+  async validateToken(user: any) {
+    return { userId: user.id, email: user.email };
   }
 
   async validateUser(email: string, password: string): Promise<any> {
