@@ -5,7 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { DatabaseModule } from './database/database.module';
-import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { UploadModule } from './upload/upload.module';
     UserModule,
     AuthModule,
     WishlistModule,
-    UploadModule,
     MulterModule.register({
       dest: './uploads',
     }),
