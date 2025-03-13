@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { WishlistService } from './wishlist.service';
-import { WishlistCreateDto } from 'src/dto/wishlist.dto';
+import { WishlistCreateDto } from '../dto/wishlist.dto';
 
 @Controller('wishlist')
 export class WishlistController {

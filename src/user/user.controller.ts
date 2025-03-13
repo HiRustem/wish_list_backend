@@ -5,7 +5,7 @@ import {
   UserRegisterDto,
   UserUpdateAvatarData,
   UserUpdateNicknameData,
-} from 'src/dto/user.dto';
+} from '../dto/user.dto';
 
 @Controller('users')
 export class UsersController {

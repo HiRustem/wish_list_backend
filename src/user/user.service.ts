@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
-import { DatabaseService } from 'src/database/database.service';
-import { UserRegisterDto } from 'src/dto/user.dto';
+import { DatabaseService } from '../database/database.service';
+import { UserRegisterDto } from '../dto/user.dto';
 
 @Injectable()
 export class UsersService {
