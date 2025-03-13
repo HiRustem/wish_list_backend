@@ -17,7 +17,9 @@ class AppFactory {
     appPromise
       .then((app) => {
         app.enableCors({
-          exposedHeaders: '*',
+          origin: true, // Разрешаем все домены (для разработки)
+          methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+          credentials: true,
         });
 
         app.init();
