@@ -20,6 +20,9 @@ export class AuthService {
 
   async getCurrentUser(userId: string) {
     const user = await this.usersService.findById(userId);
+
+    if (!userId) throw new UnauthorizedException('User ID is missing');
+
     if (!user) {
       throw new UnauthorizedException('User not found');
     }

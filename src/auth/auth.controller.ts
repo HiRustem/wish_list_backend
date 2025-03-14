@@ -37,6 +37,7 @@ export class AuthController {
   @Get('me')
   async getCurrentUser(@Req() req) {
     const userId = req.user.id;
+
     return this.authService.getCurrentUser(userId);
   }
 
