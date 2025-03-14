@@ -15,9 +15,9 @@ export class AuthService {
   ) {}
 
   async getCurrentUser(userId: string) {
-    const user = await this.usersService.findById(userId);
-
     if (!userId) throw new UnauthorizedException('User ID is missing');
+
+    const user = await this.usersService.findById(userId);
 
     if (!user) {
       throw new UnauthorizedException('User not found');
@@ -39,6 +39,8 @@ export class AuthService {
   }
 
   async login(user: any) {
+    console.log('user', user);
+
     const payload = { id: user.id, email: user.email };
     return { access_token: this.jwtService.sign(payload) };
   }
