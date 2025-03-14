@@ -1,15 +1,11 @@
 import {
   ConflictException,
-  Get,
   Injectable,
-  Req,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
-import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AuthService {
