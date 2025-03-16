@@ -11,7 +11,6 @@ import {
 import { UsersService } from './user.service';
 import {
   UserFollowDto,
-  UserRegisterDto,
   UserUpdateAvatarData,
   UserUpdateNicknameData,
 } from '../dto/user.dto';

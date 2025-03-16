@@ -20,6 +20,10 @@ export class UsersService {
   }
 
   async findByNickname(nickname: string) {
+    if (!nickname) {
+      return [];
+    }
+
     return this.prisma.user.findMany({
       where: {
         nickname: {
