@@ -17,7 +17,7 @@ class AppFactory {
     appPromise
       .then((app) => {
         app.enableCors({
-          origin: true, // Разрешаем все домены (для разработки)
+          origin: true,
           methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
           credentials: true,
         });

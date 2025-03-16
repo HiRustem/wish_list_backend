@@ -19,6 +19,17 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
+  async findByNickname(nickname: string) {
+    return this.prisma.user.findMany({
+      where: {
+        nickname: {
+          contains: nickname,
+          mode: 'insensitive',
+        },
+      },
+    });
+  }
+
   async createUser({ email, password, nickname }: UserRegisterDto) {
     return this.prisma.user.create({
       data: { email, password, nickname },
@@ -57,5 +68,37 @@ export class UsersService {
     return this.prisma.friendship.deleteMany({
       where: { followerId, followingId },
     });
+  }
+
+  async getFollowers(userId: string) {
+    const followers = await this.prisma.friendship.findMany({
+      where: { followingId: userId },
+      include: { follower: true },
+    });
+
+    return followers.map((friendship) => friendship.follower);
+  }
+
+  // Получить подписки пользователя
+  async getFollowing(userId: string) {
+    const following = await this.prisma.friendship.findMany({
+      where: { followerId: userId },
+      include: { following: true },
+    });
+
+    return following.map((friendship) => friendship.following);
+  }
+
+  async isFollowing(followerId: string, followingId: string): Promise<boolean> {
+    const friendship = await this.prisma.friendship.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId,
+          followingId,
+        },
+      },
+    });
+
+    return !!friendship; // Возвращает true, если запись существует, иначе false
   }
 }

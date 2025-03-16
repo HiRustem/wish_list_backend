@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, Param, Put, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Patch,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from './user.service';
 import {
   UserFollowDto,
@@ -19,6 +28,11 @@ export class UsersController {
   @Get(':id')
   async findById(@Param('id') id: string) {
     return this.userService.findById(id);
+  }
+
+  @Get(':nickname')
+  async findByNickname(@Param('nickname') nickname: string) {
+    return this.userService.findByNickname(nickname);
   }
 
   @Put(':id')
@@ -51,5 +65,41 @@ export class UsersController {
     { followerId, followingId }: UserFollowDto,
   ) {
     return this.userService.unfollowUser(followerId, followingId);
+  }
+
+  @Get(':userId/followers')
+  async getFollowers(@Param('userId') userId: string) {
+    try {
+      const followers = await this.userService.getFollowers(userId);
+      return followers;
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Get(':userId/following')
+  async getFollowing(@Param('userId') userId: string) {
+    try {
+      const following = await this.userService.getFollowing(userId);
+      return following;
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Get(':followerId/is-following/:followingId')
+  async isFollowing(
+    @Param('followerId') followerId: string,
+    @Param('followingId') followingId: string,
+  ) {
+    try {
+      const isFollowing = await this.userService.isFollowing(
+        followerId,
+        followingId,
+      );
+      return { isFollowing };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }
