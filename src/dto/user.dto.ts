@@ -24,3 +24,8 @@ export class UserFollowDto {
   followerId: string;
   followingId: string;
 }
+
+export class UserGetFollowsCountResult {
+  followersCount: number;
+  followingCount: number;
+}

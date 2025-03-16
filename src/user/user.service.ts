@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { DatabaseService } from '../database/database.service';
-import { UserRegisterDto } from '../dto/user.dto';
+import { UserGetFollowsCountResult, UserRegisterDto } from '../dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +32,23 @@ export class UsersService {
         },
       },
     });
+  }
+
+  async getFollowsCount(id: string): Promise<UserGetFollowsCountResult> {
+    const followers = await this.prisma.friendship.findMany({
+      where: { followingId: id },
+      include: { follower: true },
+    });
+
+    const following = await this.prisma.friendship.findMany({
+      where: { followerId: id },
+      include: { following: true },
+    });
+
+    return {
+      followersCount: followers.length,
+      followingCount: following.length,
+    };
   }
 
   async createUser({ email, password, nickname }: UserRegisterDto) {
@@ -83,7 +100,6 @@ export class UsersService {
     return followers.map((friendship) => friendship.follower);
   }
 
-  // Получить подписки пользователя
   async getFollowing(userId: string) {
     const following = await this.prisma.friendship.findMany({
       where: { followerId: userId },
@@ -103,6 +119,6 @@ export class UsersService {
       },
     });
 
-    return !!friendship; // Возвращает true, если запись существует, иначе false
+    return !!friendship;
   }
 }

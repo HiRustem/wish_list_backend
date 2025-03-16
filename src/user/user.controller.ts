@@ -50,6 +50,11 @@ export class UsersController {
     return this.userService.updateAvatar(userId, avatarUrl);
   }
 
+  @Get('followsCount/:id')
+  async getFollowsCount(@Param('id') id: string) {
+    return this.userService.getFollowsCount(id);
+  }
+
   @Post('follow')
   async follow(
     @Body()
