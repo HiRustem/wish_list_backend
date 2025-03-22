@@ -2,17 +2,46 @@ import { Injectable } from '@nestjs/common';
 
 import { DatabaseService } from '../database/database.service';
 import { UserGetFollowsCountResult, UserRegisterDto } from '../dto/user.dto';
+import { WishlistService } from 'src/wishlist/wishlist.service';
+import { WishService } from 'src/wish/wish.service';
+import { User } from 'src/types/user.types';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: DatabaseService) {}
+  constructor(
+    private prisma: DatabaseService,
+    private wishlistService: WishlistService,
+    private wishService: WishService,
+  ) {}
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
 
-  async findById(id: string) {
-    return this.prisma.user.findUnique({ where: { id } });
+  async findById(id: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!user) {
+      return null;
+    }
+
+    const wishlists = [];
+
+    const userWishlists = await this.wishlistService.findAllByUser(user.id);
+
+    for (const wishlist of userWishlists) {
+      const wishes = await this.wishService.findAllInWishlist(wishlist.id);
+
+      wishlists.push({
+        ...wishlist,
+        wishes,
+      });
+    }
+
+    return {
+      ...user,
+      wishlists,
+    };
   }
 
   async findByEmail(email: string) {

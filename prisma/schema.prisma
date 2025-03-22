@@ -29,7 +29,7 @@ model Friendship {
   followingId  String
   createdAt    DateTime @default(now())
 
-  @@unique([followerId, followingId]) // Нельзя подписаться на одного и того же человека дважды
+  @@unique([followerId, followingId])
 }
 
 model Wishlist {
